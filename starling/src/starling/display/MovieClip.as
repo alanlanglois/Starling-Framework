@@ -92,6 +92,37 @@ package starling.display
                 mStartTimes[i] = i * mDefaultFrameDuration;
             }
         }
+		
+		/** Allow to switch from an animation to the other buy reloading a new Frames Vector and reinitializing 
+		 * init data * */   
+		public function switchAnimation( newFrames:Vector.<Texture>, framesps:Number=12 ):void
+		{
+			if (newFrames.length > 0)
+			{
+				mDefaultFrameDuration = 1.0 / framesps;
+				mLoop = true;
+				mPlaying = true;
+				mTotalTime = 0.0;
+				mCurrentTime = 0.0;
+				mCurrentFrame = 0;
+				mTextures = new <Texture>[];
+				mSounds = new <Sound>[];
+				mDurations = new <Number>[];
+				mStartTimes = new <Number>[];
+
+				for each (var texture:Texture in newFrames)
+				addFrame(texture);
+			}
+			else
+			{
+				throw new ArgumentError("Empty texture array");
+			}
+
+			//ensures the new clip plays from frame 1
+			stop();
+			//Resume loop
+			play();
+		}
         
         // frame manipulation
         
